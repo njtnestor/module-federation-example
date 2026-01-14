@@ -1,21 +1,27 @@
 // Store de configuración del Shell - compartido con remotes via Module Federation
 import { defineStore, getActivePinia, setActivePinia, createPinia } from 'pinia';
 
+type Theme = 'light' | 'dark';
+
+interface ConfigState {
+  theme: Theme;
+}
+
 const configStoreDefinition = defineStore('config', {
-  state: () => ({
+  state: (): ConfigState => ({
     theme: 'light'
   }),
   
   getters: {
-    isDark: (state) => state.theme === 'dark'
+    isDark: (state): boolean => state.theme === 'dark'
   },
   
   actions: {
-    setTheme(theme) {
+    setTheme(theme: Theme): void {
       this.theme = theme;
     },
     
-    toggleTheme() {
+    toggleTheme(): void {
       this.theme = this.theme === 'light' ? 'dark' : 'light';
     }
   }
@@ -29,3 +35,5 @@ export const useConfigStore = () => {
   }
   return configStoreDefinition();
 };
+
+export type { Theme, ConfigState };

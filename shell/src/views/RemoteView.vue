@@ -15,21 +15,10 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, onMounted } from 'vue';
-import { getActivePinia } from 'pinia';
+import { defineAsyncComponent } from 'vue';
 
 // Importamos el componente remoto
 const RemoteComponent = defineAsyncComponent(() => import('remoteApp/RemoteComponent'));
-
-// Asegurar que el store use la misma instancia de Pinia
-onMounted(async () => {
-  try {
-    const { setPinia } = await import('remoteApp/stores');
-    setPinia(getActivePinia());
-  } catch (e) {
-    console.error('Error configurando store:', e);
-  }
-});
 </script>
 
 <style scoped>

@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, Ref } from 'vue';
+
+type Theme = 'light' | 'dark';
 
 // Store de fallback para cuando el remote corre en modo standalone
 export const useConfigStore = defineStore('config', () => {
-  const theme = ref('light');
+  const theme: Ref<Theme> = ref('light');
 
-  const toggleTheme = () => {
+  const toggleTheme = (): void => {
     theme.value = theme.value === 'light' ? 'dark' : 'light';
   };
 
@@ -14,3 +16,5 @@ export const useConfigStore = defineStore('config', () => {
     toggleTheme
   };
 });
+
+export type { Theme };

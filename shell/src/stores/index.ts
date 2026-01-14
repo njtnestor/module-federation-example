@@ -1,9 +1,9 @@
 // Exporta stores del Shell
-import { createPinia, setActivePinia } from 'pinia';
+import { createPinia, setActivePinia, Pinia } from 'pinia';
 
-let piniaInstance = null;
+let piniaInstance: Pinia | null = null;
 
-export const getPinia = () => {
+export const getPinia = (): Pinia => {
   if (!piniaInstance) {
     piniaInstance = createPinia();
     setActivePinia(piniaInstance);
@@ -11,9 +11,10 @@ export const getPinia = () => {
   return piniaInstance;
 };
 
-export const setPinia = (pinia) => {
+export const setPinia = (pinia: Pinia): void => {
   piniaInstance = pinia;
   setActivePinia(pinia);
 };
 
 export { useConfigStore } from './configStore';
+export type { Theme, ConfigState } from './configStore';

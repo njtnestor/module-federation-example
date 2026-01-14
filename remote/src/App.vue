@@ -3,7 +3,6 @@
     <header class="standalone-header">
       <h1>🔗 Remote App</h1>
       <p>Esta aplicación se ejecuta de forma independiente en el puerto 3001</p>
-      <span class="badge">Standalone Mode</span>
     </header>
     
     <main class="standalone-content">
@@ -16,17 +15,13 @@
         </template>
       </Suspense>
     </main>
-    
-    <footer class="standalone-footer">
-      <p>💡 Este componente también está disponible para ser consumido por la aplicación Shell</p>
-    </footer>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useConfigStore } from './stores/fallbackStore.js';
+import { useConfigStore } from './stores/fallbackStore';
 import RemoteComponent from './components/RemoteComponent.vue';
 
 const store = useConfigStore();

@@ -4,7 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const { ModuleFederationPlugin } = require('webpack').container;
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/main.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
@@ -12,7 +12,7 @@ module.exports = {
     clean: true
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.ts', '.js', '.vue', '.json'],
     alias: {
       '@': path.resolve(__dirname, 'src')
     }
@@ -30,6 +30,14 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader'
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
       },
       {
         test: /\.js$/,
@@ -54,7 +62,9 @@ module.exports = {
       filename: 'remoteEntry.js',
       exposes: {
         // Componente principal
-        './RemoteComponent': './src/components/RemoteComponent.vue'
+        './RemoteComponent': './src/components/RemoteComponent.vue',
+        // Rutas del remote
+        './routes': './src/routes.ts'
       },
       remotes: {
         // Importamos el shell para acceder a los stores

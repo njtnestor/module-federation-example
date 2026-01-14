@@ -13,15 +13,15 @@
           <span class="text">Inicio</span>
         </router-link>
         
-        <router-link to="/about" class="nav-item">
-          <span class="icon">ℹ️</span>
-          <span class="text">Acerca de</span>
-        </router-link>
-        
         <router-link to="/remote" class="nav-item remote">
           <span class="icon">🔗</span>
           <span class="text">App Remota</span>
           <span class="badge">MF</span>
+        </router-link>
+
+        <router-link to="/about" class="nav-item">
+          <span class="icon">ℹ️</span>
+          <span class="text">Acerca de</span>
         </router-link>
       </nav>
       
