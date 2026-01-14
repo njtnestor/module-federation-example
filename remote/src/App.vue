@@ -1,5 +1,5 @@
 <template>
-  <div class="remote-standalone">
+  <div class="remote-standalone" :class="themeClass">
     <header class="standalone-header">
       <h1>🔗 Remote App</h1>
       <p>Esta aplicación se ejecuta de forma independiente en el puerto 3001</p>
@@ -7,7 +7,14 @@
     </header>
     
     <main class="standalone-content">
-      <RemoteComponent />
+      <Suspense>
+        <template #default>
+          <RemoteComponent />
+        </template>
+        <template #fallback>
+          <div class="loading">Cargando componente...</div>
+        </template>
+      </Suspense>
     </main>
     
     <footer class="standalone-footer">
@@ -16,21 +23,34 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useConfigStore } from './stores/fallbackStore.js';
 import RemoteComponent from './components/RemoteComponent.vue';
 
-export default {
-  name: 'App',
-  components: {
-    RemoteComponent
-  }
-};
+const store = useConfigStore();
+const { theme } = storeToRefs(store);
+const themeClass = computed(() => `theme-${theme.value}`);
+
+// Actualizar el body cuando cambie el tema
+watch(theme, (newTheme) => {
+  document.body.style.background = newTheme === 'dark' ? '#0f0f23' : '#f5f7fa';
+}, { immediate: true });
 </script>
 
 <style>
+/* Reset y estilos globales para el tema */
+.remote-standalone.theme-dark {
+  background: #0f0f23;
+}
+
 .remote-standalone {
   max-width: 900px;
   margin: 0 auto;
+  min-height: 100vh;
+  padding: 20px;
+  transition: background 0.3s ease;
 }
 
 .standalone-header {
@@ -68,6 +88,11 @@ export default {
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   margin-bottom: 25px;
+  transition: background 0.3s ease;
+}
+
+.theme-dark .standalone-content {
+  background: #1a1a2e;
 }
 
 .standalone-footer {
@@ -77,5 +102,16 @@ export default {
   color: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
   font-size: 0.9rem;
+}
+
+.theme-dark .standalone-footer {
+  background: #0a0a15;
+}
+
+/* Estilos globales del body para tema oscuro */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background 0.3s ease;
 }
 </style>

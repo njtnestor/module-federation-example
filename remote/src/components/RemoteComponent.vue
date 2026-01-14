@@ -42,6 +42,9 @@
             <span class="value">{{ theme }} (desde Pinia)</span>
           </div>
         </div>
+        <button @click="toggleTheme" class="btn btn-theme">
+          {{ theme === 'light' ? '🌙 Cambiar a Oscuro' : '☀️ Cambiar a Claro' }}
+        </button>
       </div>
     </div>
 
@@ -54,11 +57,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import { getConfigStore } from '../stores/index.js';
 
-// Importar store desde el Shell (padre)
-const { useConfigStore } = await import('shell/stores');
+// Importar store (del shell si está disponible, o fallback local)
+const useConfigStore = await getConfigStore();
 const store = useConfigStore();
 const { theme } = storeToRefs(store);
+const { toggleTheme } = store;
 
 // Tema
 const themeClass = computed(() => `theme-${theme.value}`);
@@ -228,6 +233,19 @@ onMounted(() => {
 .info-item .value { font-weight: 600; color: #1a1a2e; }
 
 .theme-dark .info-item .value { color: #fff; }
+
+.btn-theme {
+  margin-top: 15px;
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 20px;
+  font-size: 1rem;
+}
+
+.btn-theme:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
 
 .component-footer {
   background: #1a1a2e;
