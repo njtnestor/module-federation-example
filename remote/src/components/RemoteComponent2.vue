@@ -8,40 +8,49 @@
     <div class="component-body">
       <!-- Info del componente -->
       <div class="feature-card info-card">
-        <h3>ℹ️ Información</h3>
+        <h3>🎉 Ejemplo Alternativo</h3>
         <div class="info-grid">
           <div class="info-item">
-            <span class="label">Origen:</span>
-            <span class="value">Remote (3001)</span>
+            <span class="label">Saludo dinámico:</span>
+            <span class="value" :style="{ color: greetingColor }">{{ greeting }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Tema:</span>
-            <span class="value">{{ theme }} (desde Pinia)</span>
+            <span class="label">Tema actual:</span>
+            <span class="value">{{ theme }}</span>
           </div>
         </div>
-        <button @click="toggleTheme" class="btn btn-theme">
-          {{ theme === 'light' ? '🌙 Cambiar a Oscuro' : '☀️ Cambiar a Claro' }}
+        <button @click="toggleGreeting" class="btn btn-theme">
+          Cambiar saludo
         </button>
-        <router-link to="/remote/hello" class="btn btn-hello">
-          👋 Ir a Hello World
+        <button @click="toggleTheme" class="btn btn-theme" style="margin-top:8px;">
+          {{ theme === 'light' ? '🌙 Oscuro' : '☀️ Claro' }}
+        </button>
+        <router-link to="/" class="btn btn-hello">
+          ⬅️ Ir a Home
         </router-link>
       </div>
     </div>
   </div>
 </template>
 
+
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useConfigStore } from '../stores/fallbackStore';
 
-// Usar el store local (fallback)
-// El store se sincroniza automáticamente si Pinia es singleton
+const greetings = ['👋 ¡Hola!', '🙌 Bienvenido!', '😃 Hello!', '🌟 ¡Saludos!'];
+const greetingColors = ['#e94560', '#11998e', '#764ba2', '#f39c12'];
+const greetingIndex = ref(0);
+const greeting = computed(() => greetings[greetingIndex.value]);
+const greetingColor = computed(() => greetingColors[greetingIndex.value]);
+const toggleGreeting = () => {
+  greetingIndex.value = (greetingIndex.value + 1) % greetings.length;
+};
+
 const store = useConfigStore();
 const { theme } = storeToRefs(store);
 const toggleTheme = () => store.toggleTheme();
-
-// Tema
 const themeClass = computed(() => `theme-${theme.value}`);
 </script>
 
